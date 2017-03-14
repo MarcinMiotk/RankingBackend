@@ -25,7 +25,7 @@ public class RatesServiceImpl implements RatesService {
 
     @Override
     public List<Rate> getRates(Type type) {
-        return null;
+        return repository.findAllByType(type);
     }
 
     @Override

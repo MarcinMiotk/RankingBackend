@@ -19,6 +19,7 @@
         <lombok.version>1.16.12</lombok.version>
         <mockito.version>1.10.19</mockito.version>
         <gson.version>2.7</gson.version>
+        <assertj.version>1.2.0</assertj.version>
     </properties>
 
     <dependencies>
@@ -49,6 +50,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
         </dependency>
     </dependencies>
 

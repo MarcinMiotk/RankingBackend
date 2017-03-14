@@ -11,6 +11,12 @@ import pl.arciemowicz.rankingbackend.domain.RateRepository;
 import pl.arciemowicz.rankingbackend.domain.Type;
 import pl.arciemowicz.rankingbackend.service.RatesService;
 
+import static org.assertj.core.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by bartosz_arciemowicz on 13/03/2017.
  */
@@ -34,9 +40,30 @@ public class RatesServiceTest {
 
         Rate result = ratesService.getRate(Type.MOVIE, sampleId);
 
-        Assert.assertEquals(sampleRate, result);
+        assertThat(result).isEqualsToByComparingFields(sampleRate);
 
         repository.delete(sampleRate);
+    }
+
+    @Test
+    public void getRates() throws Exception {
+        String sampleId = "123";
+        String sampleId2 = "456";
+        Double sampleAverage = 5.6;
+        Rate sampleRate = new Rate(sampleId, Type.MOVIE);
+        Rate sampleRate2 = new Rate(sampleId2, Type.MOVIE);
+        sampleRate.setAverage(sampleAverage);
+        sampleRate2.setAverage(sampleAverage);
+        repository.save(sampleRate);
+        repository.save(sampleRate2);
+        List<Rate> ratesList = new ArrayList<>(Arrays.asList(sampleRate, sampleRate2));
+
+        List<Rate> result = ratesService.getRates(Type.MOVIE);
+
+        assertThat(result).containsAll(ratesList);
+
+        repository.delete(sampleRate);
+        repository.delete(sampleRate2);
     }
 
 }
