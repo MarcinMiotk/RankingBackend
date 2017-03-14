@@ -22,6 +22,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,8 +46,9 @@ public class RankingControllerTest {
     @Test
     public void getRate() throws Exception {
         String sampleId = "123";
-        Double sampleValue = 5.6;
-        Rate sampleRate = new Rate(sampleId, Type.MOVIE, sampleValue);
+        Double sampleAverage = 5.6;
+        Rate sampleRate = new Rate(sampleId, Type.MOVIE);
+        sampleRate.setAverage(sampleAverage);
         String rateJson = gson.toJson(sampleRate);
 
         when(ratesService.getRates(Type.MOVIE, sampleRate.getId())).thenReturn(sampleRate);
@@ -59,9 +61,11 @@ public class RankingControllerTest {
     @Test
     public void getRates() throws Exception {
         String sampleId = "123";
-        Double sampleValue = 5.6;
-        List<Rate> sampleRatesList = new ArrayList<>();
-        sampleRatesList.add(new Rate(sampleId, Type.MOVIE, sampleValue));
+        Double sampleAverage = 5.6;
+        Rate sampleRate = new Rate(sampleId, Type.MOVIE);
+        sampleRate.setAverage(sampleAverage);
+
+        List<Rate> sampleRatesList = new ArrayList<>(Arrays.asList(sampleRate));
         String ratesListJson = gson.toJson(sampleRatesList);
 
         when(ratesService.getRates(Type.MOVIE)).thenReturn(sampleRatesList);
@@ -74,9 +78,11 @@ public class RankingControllerTest {
     @Test
     public void getRatesFilteredByIds() throws Exception {
         String sampleId = "123";
-        Double sampleValue = 5.6;
-        List<Rate> sampleRatesList = new ArrayList<>();
-        sampleRatesList.add(new Rate(sampleId, Type.MOVIE, sampleValue));
+        Double sampleAverage = 5.6;
+        Rate sampleRate = new Rate(sampleId, Type.MOVIE);
+        sampleRate.setAverage(sampleAverage);
+
+        List<Rate> sampleRatesList = new ArrayList<>(Arrays.asList(sampleRate));
         String ratesListJson = gson.toJson(sampleRatesList);
 
         List<String> sampleIds = new ArrayList<>(Arrays.asList(sampleId));
@@ -90,6 +96,29 @@ public class RankingControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(ratesListJson));
+    }
+
+    @Test
+    public void addRating() throws Exception {
+        String sampleId = "123";
+        Double sampleAverage = 5.;
+        Double anotherRating = 10.;
+        Rate sampleRate = new Rate(sampleId, Type.MOVIE);
+        sampleRate.addRating(sampleAverage);
+        sampleRate.addRating(anotherRating);
+        sampleRate.setAverage(sampleAverage);
+
+        String rateJson = gson.toJson(sampleRate);
+        String anotherRatingJson = gson.toJson(anotherRating);
+
+        when(ratesService.addRating(Type.MOVIE, sampleId, anotherRating)).thenReturn(sampleRate);
+
+        mvc.perform(put("/rate/movie/{movieId}", sampleRate.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(anotherRatingJson)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(rateJson));
     }
 
 

@@ -31,4 +31,9 @@ public class RankingController {
     public List<Rate> getMoviesRatesFilteredIds(@RequestBody List<String> ids) {
         return ratesService.getRates(Type.MOVIE, ids);
     }
+
+    @RequestMapping(value = "rate/movie/{movieId}", method = RequestMethod.PUT)
+    public Rate addMovieRating(@PathVariable("movieId") String movieId, @RequestBody Double rate) {
+        return ratesService.addRating(Type.MOVIE, movieId, rate);
+    }
 }
