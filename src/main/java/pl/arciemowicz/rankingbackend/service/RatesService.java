@@ -16,4 +16,6 @@ public interface RatesService {
     List<Rate> getRates(Type type, List<String> ids);
 
     Rate addRating(Type movie, String movieId, Double rate);
+
+    Rate addRate(Rate rate);
 }

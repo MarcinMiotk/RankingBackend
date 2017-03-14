@@ -36,4 +36,9 @@ public class RankingController {
     public Rate addMovieRating(@PathVariable("movieId") String movieId, @RequestBody Double rate) {
         return ratesService.addRating(Type.MOVIE, movieId, rate);
     }
+
+    @RequestMapping(value = "rate/movie", method = RequestMethod.POST)
+    public Rate addMovieRate(@RequestBody Rate rate) {
+        return ratesService.addRate(rate);
+    }
 }

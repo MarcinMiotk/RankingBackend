@@ -121,5 +121,22 @@ public class RankingControllerTest {
                 .andExpect(content().json(rateJson));
     }
 
+    @Test
+    public void addRate() throws Exception {
+        String sampleId = "123";
+        Rate sampleRate = new Rate(sampleId, Type.MOVIE);
+
+        String rateJson = gson.toJson(sampleRate);
+
+        when(ratesService.addRate(sampleRate)).thenReturn(sampleRate);
+
+        mvc.perform(post("/rate/movie")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(rateJson)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(rateJson));
+    }
+
 
 }
