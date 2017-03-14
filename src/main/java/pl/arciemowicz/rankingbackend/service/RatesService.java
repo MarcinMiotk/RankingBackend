@@ -4,6 +4,7 @@ import pl.arciemowicz.rankingbackend.domain.Rate;
 import pl.arciemowicz.rankingbackend.domain.Type;
 import pl.arciemowicz.rankingbackend.service.exception.RateNotValidException;
 import pl.arciemowicz.rankingbackend.service.exception.RateNotFoundException;
+import pl.arciemowicz.rankingbackend.service.exception.RatingValueOutOfAllowedRangeException;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface RatesService {
 
     List<Rate> getRates(Type type, List<String> ids) throws RateNotFoundException;
 
-    Rate addRating(Type type, String id, Integer rating) throws RateNotFoundException;
+    Rate addRating(Type type, String id, Integer rating) throws RateNotFoundException, RatingValueOutOfAllowedRangeException;
 
     Rate addRate(Rate rate) throws RateNotValidException;
 }

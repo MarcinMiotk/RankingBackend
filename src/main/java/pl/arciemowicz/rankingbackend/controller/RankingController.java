@@ -7,6 +7,7 @@ import pl.arciemowicz.rankingbackend.domain.Rate;
 import pl.arciemowicz.rankingbackend.domain.Type;
 import pl.arciemowicz.rankingbackend.service.exception.RateNotValidException;
 import pl.arciemowicz.rankingbackend.service.exception.RateNotFoundException;
+import pl.arciemowicz.rankingbackend.service.exception.RatingValueOutOfAllowedRangeException;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class RankingController {
     }
 
     @RequestMapping(value = "rate/movie/{movieId}", method = RequestMethod.PUT)
-    public Rate addMovieRating(@PathVariable("movieId") String movieId, @RequestBody Integer rate) throws RateNotFoundException {
+    public Rate addMovieRating(@PathVariable("movieId") String movieId, @RequestBody Integer rate) throws RateNotFoundException, RatingValueOutOfAllowedRangeException {
         return ratesService.addRating(Type.MOVIE, movieId, rate);
     }
 

@@ -1,6 +1,7 @@
 package pl.arciemowicz.rankingbackend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.arciemowicz.rankingbackend.domain.Rate;
 import pl.arciemowicz.rankingbackend.domain.RateRepository;
@@ -8,6 +9,7 @@ import pl.arciemowicz.rankingbackend.domain.Type;
 import pl.arciemowicz.rankingbackend.service.RatesService;
 import pl.arciemowicz.rankingbackend.service.exception.RateNotValidException;
 import pl.arciemowicz.rankingbackend.service.exception.RateNotFoundException;
+import pl.arciemowicz.rankingbackend.service.exception.RatingValueOutOfAllowedRangeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,12 @@ public class RatesServiceImpl implements RatesService {
 
     @Autowired
     RateRepository repository;
+
+    @Value("${ranking.rating.min}")
+    private Integer minRating;
+
+    @Value("${ranking.rating.max}")
+    private Integer maxRating;
 
     @Override
     public Rate getRate(Type type, String id) throws RateNotFoundException {
@@ -46,7 +54,10 @@ public class RatesServiceImpl implements RatesService {
     }
 
     @Override
-    public Rate addRating(Type type, String id, Integer rating) throws RateNotFoundException {
+    public Rate addRating(Type type, String id, Integer rating) throws RateNotFoundException, RatingValueOutOfAllowedRangeException {
+        if(rating < minRating || rating > maxRating) {
+            throw new RatingValueOutOfAllowedRangeException();
+        }
         Rate rate = getRate(type, id);
         rate.addRating(rating);
         return repository.save(rate);

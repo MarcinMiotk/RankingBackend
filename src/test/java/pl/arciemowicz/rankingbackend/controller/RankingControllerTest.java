@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.arciemowicz.rankingbackend.domain.Rate;
+import pl.arciemowicz.rankingbackend.domain.Type;
 import pl.arciemowicz.rankingbackend.service.RatesService;
 
 import java.util.ArrayList;
@@ -36,6 +38,9 @@ public class RankingControllerTest {
     private MockMvc mvc;
 
     private Gson gson = new Gson();
+
+    @Value("${ranking.rating.max}")
+    Integer maxRating;
 
     @Test
     public void throwsNotFoundExceptionWhenNonexistentIdGivenToGet() throws Exception {
@@ -79,6 +84,19 @@ public class RankingControllerTest {
         mvc.perform(post("/rate/movie")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(notValidRateJson)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void throwsRatingValueOutOfAllowedRangeWhenValueGivenIsOutOfRange() throws Exception {
+        Integer ratingOutOfRange = maxRating + 1;
+        String sampleId = "123";
+        String ratingOutOfRangeJson = gson.toJson(ratingOutOfRange);
+
+        mvc.perform(put("/rate/movie/{movieId}", sampleId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ratingOutOfRangeJson)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotAcceptable());
     }
