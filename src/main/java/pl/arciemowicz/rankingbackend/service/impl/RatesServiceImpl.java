@@ -8,6 +8,7 @@ import pl.arciemowicz.rankingbackend.domain.Type;
 import pl.arciemowicz.rankingbackend.service.RatesService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by bartosz_arciemowicz on 14/03/2017.
@@ -30,7 +31,7 @@ public class RatesServiceImpl implements RatesService {
 
     @Override
     public List<Rate> getRates(Type type, List<String> ids) {
-        return null;
+        return ids.stream().map(id -> getRate(type, id)).collect(Collectors.toList());
     }
 
     @Override

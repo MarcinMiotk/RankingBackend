@@ -66,4 +66,31 @@ public class RatesServiceTest {
         repository.delete(sampleRate2);
     }
 
+    @Test
+    public void getRatesFilteredByIds() throws Exception {
+        String sampleId = "123";
+        String sampleId2 = "456";
+        String sampleId3 = "789";
+        Double sampleAverage = 5.6;
+        Rate sampleRate = new Rate(sampleId, Type.MOVIE);
+        Rate sampleRate2 = new Rate(sampleId2, Type.MOVIE);
+        Rate sampleRate3 = new Rate(sampleId3, Type.MOVIE);
+        sampleRate.setAverage(sampleAverage);
+        sampleRate2.setAverage(sampleAverage);
+        sampleRate3.setAverage(sampleAverage);
+        repository.save(sampleRate);
+        repository.save(sampleRate2);
+        repository.save(sampleRate3);
+        List<Rate> ratesList = new ArrayList<>(Arrays.asList(sampleRate, sampleRate2));
+        List<String> seekedIds = new ArrayList<>(Arrays.asList(sampleId, sampleId2));
+
+        List<Rate> result = ratesService.getRates(Type.MOVIE, seekedIds);
+
+        assertThat(result).containsAll(ratesList);
+
+        repository.delete(sampleRate);
+        repository.delete(sampleRate2);
+        repository.delete(sampleRate3);
+    }
+
 }
