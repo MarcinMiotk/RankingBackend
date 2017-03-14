@@ -19,7 +19,7 @@ public class RankingController {
 
     @RequestMapping(value = "rate/movie/{movieId}", method = RequestMethod.GET)
     public Rate getMovieRate(@PathVariable("movieId") String movieId) {
-        return ratesService.getRates(Type.MOVIE, movieId);
+        return ratesService.getRate(Type.MOVIE, movieId);
     }
 
     @RequestMapping(value = "rate/movie", method = RequestMethod.GET)
