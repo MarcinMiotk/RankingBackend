@@ -40,7 +40,7 @@ public class RatesServiceImpl implements RatesService {
 
     @Override
     public List<Rate> getRates(Type type) {
-        return repository.findAllByType(type);
+        return repository.findAllByTypeOrderByAverageDesc(type);
     }
 
     @Override

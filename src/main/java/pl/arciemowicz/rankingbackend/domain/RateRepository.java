@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface RateRepository extends MongoRepository<Rate, String> {
 
-    public Rate findByTypeAndId(Type type, String firstName);
+    Rate findByTypeAndId(Type type, String firstName);
 
-    List<Rate> findAllByType(Type type);
+    List<Rate> findAllByTypeOrderByAverageDesc(Type type);
 }
