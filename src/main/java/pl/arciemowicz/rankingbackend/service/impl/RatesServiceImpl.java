@@ -43,6 +43,6 @@ public class RatesServiceImpl implements RatesService {
 
     @Override
     public Rate addRate(Rate rate) {
-        return null;
+        return repository.save(rate);
     }
 }

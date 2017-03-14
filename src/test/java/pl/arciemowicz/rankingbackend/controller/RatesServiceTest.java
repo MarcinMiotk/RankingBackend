@@ -110,4 +110,16 @@ public class RatesServiceTest {
         repository.delete(sampleRate);
     }
 
+    @Test
+    public void addRate() throws Exception {
+        String sampleId = "123";
+        Rate sampleRate = new Rate(sampleId, Type.MOVIE);
+
+        Rate result = ratesService.addRate(sampleRate);
+
+        assertThat(result).isEqualsToByComparingFields(sampleRate);
+
+        repository.delete(sampleRate);
+    }
+
 }
