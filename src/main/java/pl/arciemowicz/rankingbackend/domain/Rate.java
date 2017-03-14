@@ -2,6 +2,7 @@ package pl.arciemowicz.rankingbackend.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.arciemowicz.rankingbackend.service.exception.RateNotValidException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,12 @@ public class Rate {
         }
         else {
            throw new ArithmeticException("Couldn't properly count new average.");
+        }
+    }
+
+    public void validate() throws RateNotValidException {
+        if(id == null || id.isEmpty() || type == null) {
+            throw new RateNotValidException();
         }
     }
 }

@@ -6,9 +6,11 @@ import pl.arciemowicz.rankingbackend.domain.Rate;
 import pl.arciemowicz.rankingbackend.domain.RateRepository;
 import pl.arciemowicz.rankingbackend.domain.Type;
 import pl.arciemowicz.rankingbackend.service.RatesService;
+import pl.arciemowicz.rankingbackend.service.exception.RateNotValidException;
+import pl.arciemowicz.rankingbackend.service.exception.RateNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by bartosz_arciemowicz on 14/03/2017.
@@ -20,8 +22,12 @@ public class RatesServiceImpl implements RatesService {
     RateRepository repository;
 
     @Override
-    public Rate getRate(Type type, String id) {
-        return repository.findByTypeAndId(type, id);
+    public Rate getRate(Type type, String id) throws RateNotFoundException {
+        Rate rate = repository.findByTypeAndId(type, id);
+        if(rate == null) {
+            throw new RateNotFoundException();
+        }
+        return rate;
     }
 
     @Override
@@ -30,19 +36,25 @@ public class RatesServiceImpl implements RatesService {
     }
 
     @Override
-    public List<Rate> getRates(Type type, List<String> ids) {
-        return ids.stream().map(id -> getRate(type, id)).collect(Collectors.toList());
+    // Lambda cannot be smoothly implemented due to exception handling inside mapper
+    public List<Rate> getRates(Type type, List<String> ids) throws RateNotFoundException {
+        List<Rate> rates = new ArrayList<>();
+        for(String id : ids) {
+            rates.add(getRate(type, id));
+        }
+        return rates;
     }
 
     @Override
-    public Rate addRating(Type type, String id, Integer rating) {
+    public Rate addRating(Type type, String id, Integer rating) throws RateNotFoundException {
         Rate rate = getRate(type, id);
         rate.addRating(rating);
         return repository.save(rate);
     }
 
     @Override
-    public Rate addRate(Rate rate) {
+    public Rate addRate(Rate rate) throws RateNotValidException {
+        rate.validate();
         return repository.save(rate);
     }
 }

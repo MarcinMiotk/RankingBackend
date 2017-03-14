@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.arciemowicz.rankingbackend.service.RatesService;
 import pl.arciemowicz.rankingbackend.domain.Rate;
 import pl.arciemowicz.rankingbackend.domain.Type;
+import pl.arciemowicz.rankingbackend.service.exception.RateNotValidException;
+import pl.arciemowicz.rankingbackend.service.exception.RateNotFoundException;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class RankingController {
     RatesService ratesService;
 
     @RequestMapping(value = "rate/movie/{movieId}", method = RequestMethod.GET)
-    public Rate getMovieRate(@PathVariable("movieId") String movieId) {
+    public Rate getMovieRate(@PathVariable("movieId") String movieId) throws RateNotFoundException {
         return ratesService.getRate(Type.MOVIE, movieId);
     }
 
@@ -28,17 +30,17 @@ public class RankingController {
     }
 
     @RequestMapping(value = "rate/movie/filterIds", method = RequestMethod.POST)
-    public List<Rate> getMoviesRatesFilteredIds(@RequestBody List<String> ids) {
+    public List<Rate> getMoviesRatesFilteredIds(@RequestBody List<String> ids) throws RateNotFoundException {
         return ratesService.getRates(Type.MOVIE, ids);
     }
 
     @RequestMapping(value = "rate/movie/{movieId}", method = RequestMethod.PUT)
-    public Rate addMovieRating(@PathVariable("movieId") String movieId, @RequestBody Integer rate) {
+    public Rate addMovieRating(@PathVariable("movieId") String movieId, @RequestBody Integer rate) throws RateNotFoundException {
         return ratesService.addRating(Type.MOVIE, movieId, rate);
     }
 
     @RequestMapping(value = "rate/movie", method = RequestMethod.POST)
-    public Rate addMovieRate(@RequestBody Rate rate) {
+    public Rate addMovieRate(@RequestBody Rate rate) throws RateNotValidException {
         return ratesService.addRate(rate);
     }
 }

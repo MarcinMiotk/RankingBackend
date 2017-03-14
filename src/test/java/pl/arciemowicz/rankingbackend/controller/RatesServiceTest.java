@@ -1,6 +1,5 @@
 package pl.arciemowicz.rankingbackend.controller;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,11 @@ import pl.arciemowicz.rankingbackend.domain.RateRepository;
 import pl.arciemowicz.rankingbackend.domain.Type;
 import pl.arciemowicz.rankingbackend.service.RatesService;
 
-import static org.assertj.core.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by bartosz_arciemowicz on 13/03/2017.
