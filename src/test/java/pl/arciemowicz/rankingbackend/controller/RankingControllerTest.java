@@ -102,17 +102,16 @@ public class RankingControllerTest {
     @Test
     public void addRating() throws Exception {
         String sampleId = "123";
-        Double sampleAverage = 5.;
-        Double anotherRating = 10.;
+        Integer sampleRating = 5;
+        Integer sampleRating2 = 10;
         Rate sampleRate = new Rate(sampleId, Type.MOVIE);
-        sampleRate.addRating(sampleAverage);
-        sampleRate.addRating(anotherRating);
-        sampleRate.setAverage(sampleAverage);
+        sampleRate.addRating(sampleRating);
+        sampleRate.addRating(sampleRating2);
 
         String rateJson = gson.toJson(sampleRate);
-        String anotherRatingJson = gson.toJson(anotherRating);
+        String anotherRatingJson = gson.toJson(sampleRating2);
 
-        when(ratesService.addRating(Type.MOVIE, sampleId, anotherRating)).thenReturn(sampleRate);
+        when(ratesService.addRating(Type.MOVIE, sampleId, sampleRating2)).thenReturn(sampleRate);
 
         mvc.perform(put("/rate/movie/{movieId}", sampleRate.getId())
                 .contentType(MediaType.APPLICATION_JSON)

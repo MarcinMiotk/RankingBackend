@@ -93,4 +93,21 @@ public class RatesServiceTest {
         repository.delete(sampleRate3);
     }
 
+    @Test
+    public void addRating() throws Exception {
+        String sampleId = "123";
+        Integer sampleRating = 5;
+        Integer sampleRating2 = 10;
+        Rate sampleRate = new Rate(sampleId, Type.MOVIE);
+        sampleRate.addRating(sampleRating);
+        repository.save(sampleRate);
+        Double expectedAverage = (sampleRating + sampleRating2) / 2.;
+
+        Rate result = ratesService.addRating(Type.MOVIE, sampleId, sampleRating2);
+
+        assertThat(result.getAverage()).isEqualTo(expectedAverage);
+
+        repository.delete(sampleRate);
+    }
+
 }

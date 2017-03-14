@@ -33,7 +33,7 @@ public class RankingController {
     }
 
     @RequestMapping(value = "rate/movie/{movieId}", method = RequestMethod.PUT)
-    public Rate addMovieRating(@PathVariable("movieId") String movieId, @RequestBody Double rate) {
+    public Rate addMovieRating(@PathVariable("movieId") String movieId, @RequestBody Integer rate) {
         return ratesService.addRating(Type.MOVIE, movieId, rate);
     }
 

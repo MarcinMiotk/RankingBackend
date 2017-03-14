@@ -15,7 +15,7 @@ public interface RatesService {
 
     List<Rate> getRates(Type type, List<String> ids);
 
-    Rate addRating(Type type, String id, Double rate);
+    Rate addRating(Type type, String id, Integer rating);
 
     Rate addRate(Rate rate);
 }

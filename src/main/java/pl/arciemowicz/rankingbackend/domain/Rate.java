@@ -17,14 +17,14 @@ public class Rate {
     String id;
     Type type;
     Double average;
-    List<Double> ratings = new ArrayList<>();
+    List<Integer> ratings = new ArrayList<>();
 
     public Rate(String id, Type type) {
         this.id = id;
         this.type = type;
     }
 
-    public void addRating(Double rating) {
+    public void addRating(Integer rating) {
         ratings.add(rating);
         average = updateAverage();
     }

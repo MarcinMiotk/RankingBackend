@@ -35,8 +35,10 @@ public class RatesServiceImpl implements RatesService {
     }
 
     @Override
-    public Rate addRating(Type movie, String movieId, Double rate) {
-        return null;
+    public Rate addRating(Type type, String id, Integer rating) {
+        Rate rate = getRate(type, id);
+        rate.addRating(rating);
+        return repository.save(rate);
     }
 
     @Override
