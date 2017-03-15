@@ -27,5 +27,11 @@ To get the server up and running (on localhost, port 8080):
 mvn spring-boot:run
 ```
 
+### API
+There's Swagger installed, so you can take a look at API by going to (if default server and port):
+```sh
+localhost:8080/swagger-ui.html
+```
+
 ### Further development
 The service is ready for handling some other rankings, i.e. games (mentioned in requirements) almost ad hoc. All is has to be done is to specify a new type in Type class, and to write appropiate controllers (or create generic ones to handle multiple types – the Type is already being passed in requests).
